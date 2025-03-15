@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Touch Count Game</title>
+  <style>
+    /* CSS for the game */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .game-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .score {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ff6f61;
+      margin-bottom: 20px;
+    }
+
+    .timer {
+      font-size: 1.5rem;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .tap-area {
+      width: 200px;
+      height: 200px;
+      background: #ff6f61;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      margin: 0 auto;
+      box-shadow: 0 0 20px rgba(255, 111, 97, 0.5);
+    }
+
+    .tap-area:active {
+      transform: scale(0.95);
+    }
+
+    .start-button {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .start-button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>Touch Count Game</h1>
+    <div class="score">0</div>
+    <div class="timer">Time Left: 10s</div>
+    <div class="tap-area">Tap Me!</div>
+    <button class="start-button">Start Game</button>
+  </div>
+
+  <script>
+    // JavaScript for the game
+    const scoreDisplay = document.querySelector('.score');
+    const timerDisplay = document.querySelector('.timer');
+    const tapArea = document.querySelector('.tap-area');
+    const startButton = document.querySelector('.start-button');
+
+    let score = 0;
+    let timeLeft = 10;
+    let isGameRunning = false;
+
+    // Function to start the game
+    function startGame() {
+      if (isGameRunning) return; // Prevent multiple starts
+      isGameRunning = true;
+      score = 0;
+      timeLeft = 10;
+      scoreDisplay.textContent = score;
+      timerDisplay.textContent = `Time Left: ${timeLeft}s`;
+      startButton.disabled = true;
+
+      // Update timer every second
+      const timer = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `Time Left: ${timeLeft}s`;
+
+        // End game when time runs out
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          isGameRunning = false;
+          startButton.disabled = false;
+          alert(`Game Over! Your score is ${score}`);
+        }
+      }, 1000);
+
+      // Add tap event listener
+      tapArea.addEventListener('click', handleTap);
+    }
+
+    // Function to handle taps
+    function handleTap() {
+      if (!isGameRunning) return;
+      score++;
+      scoreDisplay.textContent = score;
+    }
+
+    // Start game when button is clicked
+    startButton.addEventListener('click', startGame);
+  </script>
+</body>
+</html>
